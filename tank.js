@@ -1,13 +1,8 @@
 document.addEventListener('DOMContentLoaded', function (){
 var chanceLeft= 1;
 var canvas= document.querySelector('canvas');
-var c= canvas.getContext("2d");
-var anime= 0;
-var bx;
-var by;
-var g = 0.15;
-var pow = 0.75;
-var ang = Math.PI/3;
+var c = canvas.getContext("2d");
+var anime = 0, bx, by, g = 0.15, pow = 0.75, ang = Math.PI/3;
 // setting up canvas width and height
 canvas.width= window.innerWidth;
 canvas.height= window.innerHeight*0.85;
@@ -221,7 +216,24 @@ function drawBullet(x,y)
 }
 
 
+function result(){
+ anime = 0;
+        if(lefttank.score > righttank.score)
+        {
+          window.alert("GAME OVER \n Lefttank WINS!");
+        }
+         else if(lefttank.score < righttank.score)
+        {
+          window.alert("GAME OVER \n Righttank WINS!");
+        }
+        else if(lefttank.score == righttank.score)
+        {
+          window.alert("GAME OVER \n TIE!");
+        }
+        window.location.reload();
 
+
+}
 
 
 /////////////////////////////////////////////////////////////
@@ -265,7 +277,7 @@ function animateBullet()
       requestAnimationFrame(animateBullet);
       c.clearRect(0,0,canvas.width,canvas.height);
       
-      if(by+10>mountain[Math.floor(bx)].y)
+      if(by + 10 > mountain[Math.floor(bx)].y)
       {
         collide= 1;
         anime= 0;
@@ -353,7 +365,6 @@ function animateBullet()
            {
              righttank.score += Math.floor(100 - distancer / 16);
            }
-
            collide = 0;
          }
 
@@ -377,22 +388,9 @@ function animateBullet()
 
 
 
-     if(!righttank.bullets && !anime)//bullets finished
+     if(!righttank.bullets && !anime && !collide)//bullets finished
       {
-        anime = 0;
-        if(lefttank.score > righttank.score)
-        {
-          window.alert("GAME OVER \n Lefttank WINS!");
-        }
-         else if(lefttank.score < righttank.score)
-        {
-          window.alert("GAME OVER \n Righttank WINS!");
-        }
-        else if(lefttank.score == righttank.score)
-        {
-          window.alert("GAME OVER \n TIE!");
-        }
-        window.location.reload();
+        setTimeout(result,500); 
       }
 
  }
@@ -408,6 +406,7 @@ function drawAll(){
    modifyTerrain();
     drawTank(lefttank);
     drawTank(righttank);
+    score();
 }
 
 /////////////////////////////////////////////////////////////
@@ -529,9 +528,12 @@ angleBtn.addEventListener('click',function(e)
   {
     angleMenu.style.display = 'block';
     controlMenu.style.display = 'none';
+
+
     if(chanceLeft)
     {
       angleValue.value = Math.ceil(lefttank.angle * 180 / Math.PI);
+   
     }
     else
     {
@@ -540,7 +542,6 @@ angleBtn.addEventListener('click',function(e)
   }
 
 })
-
 
 // powerbutton to adjust power
 powerBtn.addEventListener('click',function(e)
